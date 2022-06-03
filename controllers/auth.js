@@ -6,13 +6,15 @@ const Usuario = require('../models/usuario');
 const { generarJWT } = require('../helpers/jwt');
 const { redirect } = require('express/lib/response');
 
+/// ==========================================================
+///
 const crearUsuario = async (req, res = response) => {
 
     const { email, password } = req.body;
 
     try {
 
-        const existeEmail = await Usuario.findOne({email});
+        const existeEmail = await Usuario.findOne({ email });
 
         if( existeEmail ) {
             return res.status(400).json({
@@ -48,9 +50,13 @@ const crearUsuario = async (req, res = response) => {
     }
 }
 
+/// ==========================================================
+///
 const connectarUsuario = async (req, res = response) => {
 
     const { email, password } = req.body;
+
+    console.log('Tratando de iniciar sesion : ' +email);
 
     try {
 
@@ -77,6 +83,8 @@ const connectarUsuario = async (req, res = response) => {
         // Generar Token
         const token = await generarJWT(usuarioDB.id);
 
+        console.log('connection exitosa para ' +email)
+
         res.json({
             ok : true,
             msg: 'Usuario connectado',
@@ -93,9 +101,8 @@ const connectarUsuario = async (req, res = response) => {
     }
 }
 
-// const login req res
-// ok : true, msg : logged in.
-
+/// ==========================================================
+///
 const renewToken = async (req, res = response) => {
 
     try {
