@@ -28,6 +28,23 @@ app.use(express.static(publicPath));
 /* MIS ROUTAS */
 app.use('/api/auth', require('./routes/auth'));
 
+// this is default in case of unmatched routes
+app.use(function(req, res) {
+    // Invalid request
+          res.json({
+            error: {
+              'name':'Error',
+              'status':404,
+              'message':'Invalid Request',
+              'statusCode':404,
+              'req' : req.path,
+            //   'stack':'http://localhost:8081/'
+            },
+             message: 'Testing!'
+          });
+    });
+    
+
 
 
 
