@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
@@ -19,6 +20,9 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.3.2",
     "socket.io": "^2.3.0",
-    "xmlhttprequest-ssl": ">=1.6.2"
+  
+    "xmlhttprequest-ssl": ">=1.6.2",
+    "ws": ">=6.2.2",
+    "engine.io": ">=4.0.0"
   }
 }
