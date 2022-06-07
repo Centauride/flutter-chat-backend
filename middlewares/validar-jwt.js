@@ -1,13 +1,15 @@
 const jwt = require('jsonwebtoken');
+const { ServerErrors } = require('../helpers/server-errors');
+
 
 const validarJWT = ( req, res, next)=> {
 
     const token = req.header('x-token');
 
     if (!token){
-        return res.status(401).json({
+        return res.status(ServerErrors.missingToken.status).json({
             ok : false,
-            msg: 'No hay token en la peticion'
+            msg: ServerErrors.missingToken.message
         });
     }
 
@@ -24,10 +26,10 @@ const validarJWT = ( req, res, next)=> {
         
     } catch (error) {
         console.log(error);
-        res.status(500).json({
+        res.status(ServerErrors.genericError.status).json({
             ok : false,
-            msg : "token no valido"
-        });
+            msg : ServerErrors.genericError.message
+        })
         
     }
 

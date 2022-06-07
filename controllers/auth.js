@@ -5,6 +5,8 @@ const  bcrypt  = require('bcryptjs');
 const Usuario = require('../models/usuario');
 const { generarJWT } = require('../helpers/jwt');
 const { redirect } = require('express/lib/response');
+const { ServerErrors } = require('../helpers/server-errors');
+
 
 /// ==========================================================
 ///
@@ -17,9 +19,9 @@ const crearUsuario = async (req, res = response) => {
         const existeEmail = await Usuario.findOne({ email });
 
         if( existeEmail ) {
-            return res.status(400).json({
+            return res.status(ServerErrors.alreadyRegistered.status).json({
                 ok : false,
-                msg : 'El correo ya esta registrado',
+                msg :  ServerErrors.alreadyRegistered.message,
             });
         }
 
@@ -43,10 +45,11 @@ const crearUsuario = async (req, res = response) => {
         
     } catch (error) {
         console.log(error);
-        res.status(500).json({
-            ok : false,
-            msg : "Hable con el administrador"
-        })
+        res.status(ServerErrors.genericError.status)
+            .json({
+                ok : false,
+                msg : ServerErrors.genericError.message
+            });
     }
 }
 
@@ -63,19 +66,20 @@ const connectarUsuario = async (req, res = response) => {
         const usuarioDB = await Usuario.findOne({ email });
 
         if( !usuarioDB ) {
-            return res.status(400).json({
-                ok : false,
-                msg : 'El correo no es valido',
-            });
+            return res.status(ServerErrors.invalidEmail.status)
+                .json({
+                    ok : false,
+                    msg : ServerErrors.invalidEmail.message,
+                });
         }
 
         // Decriptar contrasena
         const isPasswordValid = bcrypt.compareSync(password, usuarioDB.password);
     
         if( !isPasswordValid ) {
-            return res.status(400).json({
+            return res.status(ServerErrors.invalidPassword.status).json({
                 ok : false,
-                msg : 'La contrasena no es valida',
+                msg : ServerErrors.invalidPassword.message,
             });
         }
 
@@ -94,9 +98,9 @@ const connectarUsuario = async (req, res = response) => {
         
     } catch (error) {
         console.log(error);
-        res.status(500).json({
+        res.status(ServerErrors.genericError.status).json({
             ok : false,
-            msg : "Hable con el administrador"
+            msg : ServerErrors.genericError.message
         })
     }
 }
@@ -127,9 +131,9 @@ const renewToken = async (req, res = response) => {
     
     } catch (error) {
         console.log(error);
-        res.status(500).json({
+        res.status(ServerErrors.genericError.status).json({
             ok : false,
-            msg : "Hable con el administrador"
+            msg : ServerErrors.genericError.message
         })
     }
 

@@ -2,6 +2,8 @@ const express = require('express');
 const path = require('path');
 const { isModuleNamespaceObject } = require('util/types');
 require('dotenv').config();
+const { ServerErrors } = require('./helpers/server-errors');
+
 
 require('./database/config').dbConnection();
 
@@ -33,14 +35,12 @@ app.use(function(req, res) {
     // Invalid request
           res.json({
             error: {
-              'name':'Error',
-              'status':404,
-              'message':'Invalid Request',
-              'statusCode':404,
-              'req' : req.path,
-            //   'stack':'http://localhost:8081/'
-            },
-             message: 'Testing!'
+              name : 'Error',
+              status : ServerErrors.invalidRequest.status,
+              statusCode : ServerErrors.invalidRequest.status,
+              message : ServerErrors.invalidRequest.message,
+              requestedPath : req.path,
+            }
           });
     });
     
