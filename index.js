@@ -32,16 +32,27 @@ app.use('/api/auth', require('./routes/auth'));
 
 // this is default in case of unmatched routes
 app.use(function(req, res) {
+
+  return res.status(ServerErrors.invalidRequest.status).json({
+    ok : false,
+    msg : ServerErrors.invalidRequest.message,
+    name : 'Error',
+    statusCode : ServerErrors.invalidRequest.status,
+    requestedPath : req.path,
+
+    
+});
+
     // Invalid request
-          res.json({
-            error: {
-              name : 'Error',
-              status : ServerErrors.invalidRequest.status,
-              statusCode : ServerErrors.invalidRequest.status,
-              message : ServerErrors.invalidRequest.message,
-              requestedPath : req.path,
-            }
-          });
+          // res.json({
+          //   error: {
+          //     name : 'Error',
+          //     status : ServerErrors.invalidRequest.status,
+          //     statusCode : ServerErrors.invalidRequest.status,
+          //     message : ServerErrors.invalidRequest.message,
+          //     requestedPath : req.path,
+          //   }
+          // });
     });
     
 
